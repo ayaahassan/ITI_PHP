@@ -7,7 +7,7 @@ $getemail=isset($_POST["email"])?$_POST["email"]:"";
 $gettextarea=isset($_POST["comment"])?$_POST["comment"]:"";
 $count=0;
 if (isset($_POST["send"])){
-if(strlen($getname)>$NAME_MAXLENGTH)
+if(strlen($getname)>NAME_MAXLENGTH)
 {
 
 	$message[]="******too long name";
@@ -18,7 +18,7 @@ if(!empty($getemail)&&(!filter_var($getemail,FILTER_VALIDATE_EMAIL)))
 	$message[]="*****invalid email";
 	$count++;
 }
-if(strlen($gettextarea)>$TEXTAREA_MAXLENGTH)
+if(strlen($gettextarea)>TEXTAREA_MAXLENGTH)
 {
 	$message[]="*****too long message";
 	$count++;
@@ -35,10 +35,14 @@ if($count>0)
   }
   else
   {
-	  echo SUBMIT_MESG."<br>";
+      $fp = fopen("log.txt","a+");
+      $visitdate=date("F j Y g:i a");
+     $display="Date".$visitdate.","."ip". $_SERVER['REMOTE_ADDR'].","."email ".$getemail.","."name".$getname;
+      fwrite($fp,$display.PHP_EOL);
+      echo SUBMIT_MESG."<br>";
 	  echo "**$getname<br>";
 	  echo "**$getemail<br>";
-	   echo "**$gettextarea";
+	  echo "**$gettextarea";
   }
 }
 function getvalue($field)
